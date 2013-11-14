@@ -12,6 +12,7 @@
 #include "input.h"
 #include <time.h>
 #include "camera.h"
+#include "vec.h"
 
 Camera *camera;
 Player *player1;
@@ -107,6 +108,15 @@ void idle()
 			light->position.y = 10;
 			player1->update(input, deltaSeconds, 0);
 			player2->update(input, deltaSeconds, 0);
+			camera->update(input, deltaSeconds);
+
+			vec3 d = player1->getPosition() - player2->getPosition();
+			float r = player1->getRadius() + player2->getRadius();
+			if (length(d) <= r)
+			{
+				player1->onPlayerCollision(player2->getPosition());
+				player2->onPlayerCollision(player1->getPosition());
+			}
         }
 
         //update display

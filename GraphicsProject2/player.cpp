@@ -3,15 +3,20 @@
 Player::Player(int playerNum)
 {
 	this->playerNumber = playerNum;
-	this->playerModel = Sphere(vec3(0.0, 0.0, 10.0), 1);
-	if (playerNum == 2) {
+	this->playerModel = Sphere(vec3(0.0, 0.0, 10.0), 1, RED);
+	this->disk = Sphere(vec3(0.0, 0.0, 10.0), 1.0, BLUE);
+	this->disk.setScale(1.25, 1.25, 0.1);
+	if (playerNum == 1) {
+		makePredator();
+	} else {
 		this->playerModel.setPosition(-playerModel.getPosition());
+		makePrey();
 	}
 	this->score = 0;
 	this->moveSpeed = 20.0;
-	this->collisionBounceTime = 2.0;
-	this->playBoundary = vec2(10.0, 10.0);
 	this->bounceTimer = 0.0f;
+	this->collisionBounceTime = 0.5;
+	this->playBoundary = vec2(20.0, 20.0);
 }
 
 void Player::update(Input input, float deltaTime, float timeToSwitch)
@@ -73,21 +78,34 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
     }
 
         //keep player on screen
-		/*if (playerModel.getPosition().x - playerModel.getRadius() < -playBoundary.x) {
+		if (playerModel.getPosition().x - playerModel.getRadius() < -playBoundary.x) {
 			playerModel.setPosition(vec3(
 				-playBoundary.x + playerModel.getRadius(),
 				playerModel.getPosition().y,
 				playerModel.getPosition().z));
-        }*/
-        /*else if (playerModel.getPosition().x + playerModel.getRadius() > 1.0f) {
-                playerModel.setPosition(1.0f - playerModel.getRadius(), playerModel.getPosition().y);
         }
-        if (playerModel.getPosition().z - playerModel.getRadius() < -1.0f) {
-                playerModel.setPosition(playerModel.getPosition().x, -1.0f + playerModel.getRadius());
+        else if (playerModel.getPosition().x + playerModel.getRadius() > playBoundary.x) {
+				playerModel.setPosition(vec3(
+				playBoundary.x - playerModel.getRadius(),
+				playerModel.getPosition().y,
+				playerModel.getPosition().z));
         }
-        else if (playerModel.getPosition().z + playerModel.getRadius() > 1.0f) {
-                playerModel.setPosition(playerModel.getPosition().x, 1.0f - playerModel.getRadius());
-        }*/
+		if (playerModel.getPosition().z - playerModel.getRadius() < -playBoundary.y) {
+			playerModel.setPosition(vec3(
+				playerModel.getPosition().x,
+				playerModel.getPosition().y,
+				-playBoundary.y + playerModel.getRadius()));
+        }
+        else if (playerModel.getPosition().z + playerModel.getRadius() > playBoundary.y) {
+				playerModel.setPosition(vec3(
+				playerModel.getPosition().x,
+				playerModel.getPosition().y,
+				playBoundary.x - playerModel.getRadius()));
+        }
+
+		this->disk.setPosition(this->getPosition());
+		this->disk.rotate(0.0, 360 * deltaTime, 0.0);
+		this->playerModel.rotate(0.0, 360 * deltaTime, 0.0);
 
         //rotate model
         /*if (timeToSwitch != 0) {
@@ -101,6 +119,7 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
 void Player::draw(mat4 mv, mat4 p, Light light)
 {
 	this->playerModel.draw(mv, p, light);
+	this->disk.draw(mv, p, light);
 }
 
 Sphere Player::getModel()
@@ -110,7 +129,8 @@ Sphere Player::getModel()
 
 void Player::onPlayerCollision(vec3 otherPlayerPos)
 {
-
+	bounceDirection = -normalize(otherPlayerPos - getPosition());
+	bounceTimer = collisionBounceTime;
 }
 
 void Player::onObstacleCollision()
@@ -125,17 +145,17 @@ void Player::onOtherPlayerObstacleCollision()
 
 void Player::makePredator()
 {
-
+	this->isPredator = true;
 }
 
 void Player::makePrey()
 {
-
+	this->isPredator = false;
 }
 
 void Player::onRoleSwitch()
 {
-
+	this->isPredator = !isPredator;
 }
 
 float Player::getMovementBudget()
@@ -161,4 +181,14 @@ bool Player::isOverMovementBudget()
 int Player::getScore()
 {
 	return this->score;
+}
+
+vec3 Player::getPosition()
+{
+	return playerModel.getPosition();
+}
+
+float Player::getRadius()
+{
+	return playerModel.getRadius();
 }

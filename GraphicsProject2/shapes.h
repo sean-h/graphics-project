@@ -16,10 +16,12 @@ protected:
 	GLuint buffer;
 	vec3 position;
 	vec3 scale;
+	vec3 rotation;
 	GLuint program;
 	GLuint positionMat;
 	GLuint modelViewMat;
 	GLuint projectionMat;
+	GLuint rotationMat;
 	GLuint scaleMat;
 	GLuint normalMat;
 	color4 diffuse;
@@ -34,6 +36,7 @@ public:
 	void move(vec3 amount);
 	vec3 getPosition();
 	void setPosition(vec3 pos);
+	void rotate(float x, float y, float z);
 };
 
 class Cube : public Shape
@@ -54,13 +57,13 @@ private:
 	void triangle(const point4& a, const point4& b, const point4& c);
 	void tetrahedron(int count);
 	void divideTriangle(const point4& a, const point4& b, const point4& c, int count);
-	
 	int index;
 	point4 unit(const point4& p);
 public:
 	Sphere();
-	Sphere(vec3 pos, GLfloat r);
+	Sphere(vec3 pos, GLfloat r, color4 color);
 	float getRadius();
+	void setScale(float x, float y, float z);
 };
 
 #endif

@@ -13,6 +13,7 @@ private:
     float distanceMoved;
     float moveSpeed;
     Sphere playerModel;
+	Sphere disk;
     float bounceTimer;
     float collisionBounceTime;
     vec3 bounceDirection;
@@ -35,6 +36,8 @@ public:
     bool isFrozen();
     bool isOverMovementBudget();
     int getScore();
+	vec3 getPosition();
+	float getRadius();
 };
 
 #endif

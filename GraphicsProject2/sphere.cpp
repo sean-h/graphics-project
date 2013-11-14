@@ -4,15 +4,17 @@
 
 Sphere::Sphere() { }
 
-Sphere::Sphere(vec3 pos, GLfloat r)
+Sphere::Sphere(vec3 pos, GLfloat r, color4 color)
 {
 	position = pos;
+	radius = r;
 	scale = vec3(r, r, r);
+	rotation = vec3(0.0, 0.0, 0.0);
 	index = 0;
 	numVertices = 3 * 4096;
 	points = new point4[numVertices];
 	normals = new vec3[numVertices];
-	diffuse = color4(1.0, 0.0, 0.0, 1.0);
+	diffuse = color;
 	ambient = color4(0.2, 0.2, 0.2, 1.0);
 	specular = color4(1.0, 1.0, 1.0, 1.0);
 	shininess = 100.0;
@@ -82,4 +84,16 @@ point4 Sphere::unit(const point4& p)
 	}
 
 	return t;
+}
+
+float Sphere::getRadius()
+{
+	return radius;
+}
+
+void Sphere::setScale(float x, float y, float z)
+{
+	this->scale.x = x;
+	this->scale.y = y;
+	this->scale.z = z;
 }

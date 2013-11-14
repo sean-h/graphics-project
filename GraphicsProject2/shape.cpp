@@ -9,6 +9,7 @@ Shape::Shape()
     projectionMat = glGetUniformLocation(program, "Projection");
 	positionMat = glGetUniformLocation(program, "Position");
 	scaleMat = glGetUniformLocation(program, "Scale");
+	rotationMat = glGetUniformLocation(program, "Rotation");
 }
 
 void Shape::setUpShader()
@@ -37,6 +38,9 @@ void Shape::draw(mat4 mv, mat4 p, Light light)
 
 	mat4 s = Scale(scale);
 	glUniformMatrix4fv(scaleMat, 1, GL_TRUE, s);
+
+	mat4 r = RotateX(rotation.x) * RotateY(rotation.y) * RotateZ(rotation.z);
+	glUniformMatrix4fv(rotationMat, 1, GL_TRUE, r);
 
 	glUniform4fv(glGetUniformLocation(program, "AmbientProduct"), 1, light.ambient * ambient);
 	glUniform4fv(glGetUniformLocation(program, "DiffuseProduct"), 1, light.diffuse * diffuse);
@@ -67,4 +71,11 @@ vec3 Shape::getPosition()
 void Shape::setPosition(vec3 pos)
 {
 	this->position = pos;
+}
+
+void Shape::rotate(float x, float y, float z)
+{
+	rotation.x += x;
+	rotation.y += y;
+	rotation.z += z;
 }
