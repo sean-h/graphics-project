@@ -13,12 +13,18 @@
 #include <time.h>
 #include "camera.h"
 #include "vec.h"
+#include <vector>
+#include "obstacle.h"
+#include "collision.h"
+#include <random>
 
 Camera *camera;
 Player *player1;
 Player *player2;
 Cube *playField;
 Light *light;
+std::vector<Obstacle*> obstacles;
+const int obstacleCount = 10;
 
 bool isPaused = false;
 bool isGameOver = false;
@@ -42,10 +48,19 @@ void init()
 					  color4(1.0, 1.0, 1.0, 1.0),
 					  color4(1.0, 1.0, 1.0, 1.0));
 
+	for (int i = 0; i < obstacleCount; i++) {
+		float x = rand() % 40 - 20;
+		float z = rand() % 40 - 20;
+		float moveX =  rand() % 20 - 10;
+		float moveZ =  rand() % 20 - 10;
+
+		Obstacle *o = new Obstacle(vec3(x, 0, z), 0, vec3(moveX, 0, moveZ));
+		obstacles.push_back(o);
+	}
+
 	playField = new Cube(vec3(0.0, 0.0, 0.0), vec3(40.0, 0.1, 40.0));
 
     glEnable(GL_DEPTH_TEST);
-	glShadeModel(GL_SMOOTH);
     glClearColor( 0.5, 0.5, 0.5, 1.0 ); 
 
 	timer = clock();
@@ -60,6 +75,10 @@ void display()
 	player1->draw(mv, p, *light);
 	player2->draw(mv, p, *light);
 	playField->draw(mv, p, *light);
+
+	for (auto o : obstacles) {
+		o->draw(mv, p, *light);
+	}
 
     glutSwapBuffers();
 }
@@ -109,13 +128,30 @@ void idle()
 			player1->update(input, deltaSeconds, 0);
 			player2->update(input, deltaSeconds, 0);
 			camera->update(input, deltaSeconds);
+			for (auto o : obstacles) {
+				if (o->getIsAlive()) {
+					o->update(deltaSeconds);
+				}
+			}
 
-			vec3 d = player1->getPosition() - player2->getPosition();
-			float r = player1->getRadius() + player2->getRadius();
-			if (length(d) <= r)
-			{
+			if (collides(player1->getModel(), player2->getModel())) {
 				player1->onPlayerCollision(player2->getPosition());
 				player2->onPlayerCollision(player1->getPosition());
+			}
+
+			for (auto o : obstacles) {
+				if (o->getIsAlive()) {
+					if (collides(player1->getModel(), o->getModel())) {
+						player1->onObstacleCollision();
+						player2->onOtherPlayerObstacleCollision();
+						o->onPlayerCollision();
+					}
+					if (collides(player2->getModel(), o->getModel())) {
+						player2->onObstacleCollision();
+						player1->onOtherPlayerObstacleCollision();
+						o->onPlayerCollision();
+					}
+				}
 			}
         }
 
@@ -128,7 +164,7 @@ int main(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(512, 512);
-    glutInitContextVersion(3, 2);
+    glutInitContextVersion(3, 1);
     glutInitContextProfile(GLUT_CORE_PROFILE);
     glutCreateWindow("Graphics Project 2");
 	

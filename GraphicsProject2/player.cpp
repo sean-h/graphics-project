@@ -1,4 +1,5 @@
 #include "player.h"
+#include <math.h>
 
 Player::Player(int playerNum)
 {
@@ -14,8 +15,11 @@ Player::Player(int playerNum)
 	}
 	this->score = 0;
 	this->moveSpeed = 20.0;
+	this->movementBudget = 100.0f;
+	this->distanceMoved = 0.0f;
 	this->bounceTimer = 0.0f;
 	this->collisionBounceTime = 0.5;
+	this->defaultRadius = 1.0f;
 	this->playBoundary = vec2(20.0, 20.0);
 }
 
@@ -131,16 +135,29 @@ void Player::onPlayerCollision(vec3 otherPlayerPos)
 {
 	bounceDirection = -normalize(otherPlayerPos - getPosition());
 	bounceTimer = collisionBounceTime;
+
+	if (!isPredator) {
+		float newRadius = std::max(playerModel.getRadius() * 0.8f, 0.5f);
+		playerModel.setRadius(newRadius);
+	}
 }
 
 void Player::onObstacleCollision()
 {
-
+	if (this->isPredator) {
+        float moveRemaining = this->movementBudget - this->distanceMoved;
+        moveRemaining *= 0.75f;
+        this->distanceMoved = this->movementBudget - moveRemaining;
+    }
 }
 
 void Player::onOtherPlayerObstacleCollision()
 {
-
+	if (this->isPredator) {
+        float moveRemaining = this->distanceMoved;
+        moveRemaining *= 0.15f;
+        this->distanceMoved -= moveRemaining;
+	}
 }
 
 void Player::makePredator()

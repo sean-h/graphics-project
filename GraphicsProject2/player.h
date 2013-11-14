@@ -1,5 +1,4 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#pragma once
 
 #include "input.h"
 #include "shapes.h"
@@ -39,5 +38,3 @@ public:
 	vec3 getPosition();
 	float getRadius();
 };
-
-#endif

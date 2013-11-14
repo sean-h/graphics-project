@@ -63,6 +63,7 @@ public:
 	Sphere();
 	Sphere(vec3 pos, GLfloat r, color4 color);
 	float getRadius();
+	void setRadius(float r);
 	void setScale(float x, float y, float z);
 };
 

@@ -84,6 +84,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="obstacle.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="shape.cpp" />
     <ClCompile Include="sphere.cpp" />
@@ -92,10 +93,12 @@
     <ClInclude Include="Angel.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="CheckError.h" />
+    <ClInclude Include="collision.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="mat.h" />
+    <ClInclude Include="obstacle.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="shapes.h" />
     <ClInclude Include="vec.h" />

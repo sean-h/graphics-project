@@ -91,6 +91,12 @@ float Sphere::getRadius()
 	return radius;
 }
 
+void Sphere::setRadius(float r)
+{
+	this->radius = r;
+	setScale(r, r, r);
+}
+
 void Sphere::setScale(float x, float y, float z)
 {
 	this->scale.x = x;

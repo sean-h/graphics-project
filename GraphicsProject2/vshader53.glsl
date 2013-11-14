@@ -23,7 +23,7 @@ void main()
     vec3 H = normalize(L + E);
 
     // Transform vertex normal into eye coordinates
-    vec3 N = normalize( ModelView*vec4(vNormal, 0.0) ).xyz;
+    vec3 N = normalize(ModelView*vec4(vNormal, 0.0) ).xyz;
 
     // Compute terms in the illumination equation
     vec4 ambient = AmbientProduct;
@@ -37,7 +37,6 @@ void main()
     if( dot(L, N) < 0.0 ) {
 	specular = vec4(0.0, 0.0, 0.0, 1.0);
     } 
-
     gl_Position = Projection * ModelView * Position * Rotation * Scale  * vPosition;
 
     color = ambient + diffuse + specular;
