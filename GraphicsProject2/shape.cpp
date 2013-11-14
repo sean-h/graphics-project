@@ -10,11 +10,12 @@ Shape::Shape()
 	positionMat = glGetUniformLocation(program, "Position");
 	scaleMat = glGetUniformLocation(program, "Scale");
 	rotationMat = glGetUniformLocation(program, "Rotation");
+
+	glGenBuffers(1, &buffer);
 }
 
 void Shape::setUpShader()
 {
-	glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(point4) * numVertices + sizeof(color4) * numVertices, NULL, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(point4) * numVertices, points);
