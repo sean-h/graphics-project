@@ -78,21 +78,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="InitShader.cpp" />
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="shape.cpp" />
+    <ClCompile Include="sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Angel.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="CheckError.h" />
-    <ClInclude Include="cube.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="input.h" />
+    <ClInclude Include="light.h" />
     <ClInclude Include="mat.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="shapes.h" />
     <ClInclude Include="vec.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader42.glsl" />
     <None Include="vshader42.glsl" />
+    <None Include="vshader53.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

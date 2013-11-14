@@ -7,126 +7,131 @@
 
 #include "Angel.h"
 #include "graphics.h"
-#include "cube.h"
+#include "player.h"
+#include "shapes.h"
+#include "input.h"
+#include <time.h>
+#include "camera.h"
 
-Cube *cube;
-Cube *cube2;
+Camera *camera;
+Player *player1;
+Player *player2;
+Cube *playField;
+Light *light;
 
-// Viewing transformation parameters
-
-GLfloat radius = 1.0;
-GLfloat theta = 0.0;
-GLfloat phi = 0.0;
-
-const GLfloat  dr = 5.0 * DegreesToRadians;
-
-// Projection transformation parameters
-
-GLfloat  fovy = 45.0;  // Field-of-view in Y direction angle (in degrees)
-GLfloat  aspect;       // Viewport aspect ratio
-GLfloat  zNear = 0.1, zFar = 300.0;
+bool isPaused = false;
+bool isGameOver = false;
+Input input;
+clock_t timer;
+clock_t gameTimer;
 
 // OpenGL initialization
-void
-init()
+void init()
 {
 	GLuint vao;
     glGenVertexArrays( 1, &vao );
     glBindVertexArray( vao );
 
-	cube = new Cube(vec3(1.0, 0.0, 0.0));
-	cube2 = new Cube(vec3(0.1, 0.1, 0.1));
+	camera = new Camera(vec3(40.0, 40.0, 0.0));
+	
+	player1 = new Player(1);
+	player2 = new Player(2);
+	light = new Light(point4(-1.0, 1.0, 0.0, 1.0),
+					  color4(0.2, 0.2, 0.2, 1.0),
+					  color4(1.0, 1.0, 1.0, 1.0),
+					  color4(1.0, 1.0, 1.0, 1.0));
 
-	cube->setUpShader();
-	cube2->setUpShader();
+	playField = new Cube(vec3(0.0, 0.0, 0.0), vec3(40.0, 0.1, 40.0));
 
-    glEnable( GL_DEPTH_TEST );
-    glClearColor( 1.0, 1.0, 1.0, 1.0 ); 
+    glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_SMOOTH);
+    glClearColor( 0.5, 0.5, 0.5, 1.0 ); 
+
+	timer = clock();
 }
 
-//----------------------------------------------------------------------------
-
-void
-display( void )
+void display()
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    point4  eye( radius*sin(theta)*cos(phi), radius*sin(theta)*sin(phi), radius*cos(theta), 1.0 );
-    point4  at( 0.0, 0.0, 0.0, 1.0 );
-    vec4    up( 0.0, 1.0, 0.0, 0.0 );
+	mat4  mv = camera->getLookAt();
+	mat4  p = camera->getPerspective();
+	player1->draw(mv, p, *light);
+	player2->draw(mv, p, *light);
+	playField->draw(mv, p, *light);
 
-    mat4  mv = LookAt( eye, at, up );
-    mat4  p = Perspective( fovy, aspect, zNear, zFar );
-
-	cube->draw(mv, p);
-	cube2->draw(mv, p);
-	
     glutSwapBuffers();
 }
 
-//----------------------------------------------------------------------------
-
-void
-keyboard( unsigned char key, int x, int y )
+void keyboard( unsigned char key, int x, int y )
 {
-    switch( key ) {
-	case 033: // Escape Key
-	case 'q': case 'Q':
-	    exit( EXIT_SUCCESS );
-	    break;
+    input.keyPressed(key);
 
-	case 'z': zNear  *= 1.1; zFar *= 1.1; break;
-	case 'Z': zNear *= 0.9; zFar *= 0.9; break;
-	case 'r': radius *= 2.0; break;
-	case 'R': radius *= 0.5; break;
-	case 'o': theta += dr; break;
-	case 'O': theta -= dr; break;
-	case 'p': phi += dr; break;
-	case 'P': phi -= dr; break;
-
-	case ' ':  // reset values to their defaults
-	    zNear = 0.5;
-	    zFar = 3.0;
-
-	    radius = 1.0;
-	    theta  = 0.0;
-	    phi    = 0.0;
-	    break;
+    switch (key) 
+    {
+    case VK_ESCAPE:
+		exit(EXIT_SUCCESS);
+		break;
+    case VK_SPACE:
+            isPaused = !isPaused;
+            break;
     }
-
-    glutPostRedisplay();
 }
 
-//----------------------------------------------------------------------------
-
-void
-reshape( int width, int height )
+void keyUp(unsigned char key, int x, int y)
 {
-    glViewport( 0, 0, width, height );
-
-    aspect = GLfloat(width)/height;
+	input.keyReleased(key);
 }
 
-//----------------------------------------------------------------------------
-
-int
-main( int argc, char **argv )
+void reshape(int width, int height)
 {
-    glutInit( &argc, argv );
-    glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
-    glutInitWindowSize( 512, 512 );
-    glutInitContextVersion( 3, 2 );
-    glutInitContextProfile( GLUT_CORE_PROFILE );
-    glutCreateWindow( "Graphics Project 2" );
+    glViewport(0, 0, width, height);
+
+	camera->setAspect(GLfloat(width) / height);
+}
+
+void idle() 
+{
+        //handle timer
+        clock_t deltaTime = clock() - timer;
+        double deltaSeconds = (double)deltaTime / (double)CLOCKS_PER_SEC;
+        if (deltaSeconds < 0.001) {
+                Sleep (0.001 - deltaSeconds * 1000);
+                deltaSeconds = 0.001;
+        }
+        timer = clock();
+
+        //update players
+        if (!isPaused && !isGameOver) {
+			light->position = player1->getModel().getPosition();
+			light->position.y = 10;
+			player1->update(input, deltaSeconds, 0);
+			player2->update(input, deltaSeconds, 0);
+        }
+
+        //update display
+        glutPostRedisplay();
+}
+
+int main(int argc, char **argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+    glutInitWindowSize(512, 512);
+    glutInitContextVersion(3, 2);
+    glutInitContextProfile(GLUT_CORE_PROFILE);
+    glutCreateWindow("Graphics Project 2");
 	
 	glewExperimental = true;
     glewInit();
 
     init();
 
-    glutDisplayFunc( display );
-    glutKeyboardFunc( keyboard );
-    glutReshapeFunc( reshape );
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
+	glutKeyboardUpFunc(keyUp);
+    glutReshapeFunc(reshape);
+	glutIdleFunc(idle);
 
     glutMainLoop();
     return 0;
