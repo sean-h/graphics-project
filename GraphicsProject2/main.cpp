@@ -43,7 +43,7 @@ void init()
 	
 	player1 = new Player(1);
 	player2 = new Player(2);
-	light = new Light(point4(-1.0, 1.0, 0.0, 1.0),
+	light = new Light(point4(0.0, 1.0, 0.0, 1.0),
 					  color4(0.2, 0.2, 0.2, 1.0),
 					  color4(1.0, 1.0, 1.0, 1.0),
 					  color4(1.0, 1.0, 1.0, 1.0));
@@ -61,6 +61,7 @@ void init()
 	playField = new Cube(vec3(0.0, 0.0, 0.0), vec3(40.0, 0.1, 40.0));
 
     glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_FLAT);
     glClearColor( 0.5, 0.5, 0.5, 1.0 ); 
 
 	timer = clock();
@@ -74,7 +75,7 @@ void display()
 	mat4  p = camera->getPerspective();
 	player1->draw(mv, p, *light);
 	player2->draw(mv, p, *light);
-	playField->draw(mv, p, *light);
+	//playField->draw(mv, p, *light);
 
 	for (auto o : obstacles) {
 		o->draw(mv, p, *light);
@@ -123,8 +124,8 @@ void idle()
 
         //update players
         if (!isPaused && !isGameOver) {
-			light->position = player1->getModel().getPosition();
-			light->position.y = 10;
+			//light->position = player1->getModel().getPosition();
+			//light->position.y = 10;
 			player1->update(input, deltaSeconds, 0);
 			player2->update(input, deltaSeconds, 0);
 			camera->update(input, deltaSeconds);

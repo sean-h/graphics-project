@@ -16,14 +16,14 @@ uniform float Shininess;
 void main()
 {
     // Transform vertex  position into eye coordinates
-    vec3 pos = (Position * Rotation  * Scale *  ModelView * vPosition).xyz;
+    vec3 pos = (Position * Rotation  * Scale * vPosition).xyz;
 	
-    vec3 L = normalize((ModelView*LightPosition).xyz - pos );
+    vec3 L = normalize(LightPosition.xyz - pos );
     vec3 E = normalize(-pos);
     vec3 H = normalize(L + E);
 
     // Transform vertex normal into eye coordinates
-    vec3 N = normalize(ModelView*vec4(vNormal, 0.0) ).xyz;
+    vec3 N = normalize(Rotation * vec4(vNormal, 0.0)).xyz;
 
     // Compute terms in the illumination equation
     vec4 ambient = AmbientProduct;

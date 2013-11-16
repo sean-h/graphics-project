@@ -108,8 +108,8 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
         }
 
 		this->disk.setPosition(this->getPosition());
-		this->disk.rotate(0.0, 360 * deltaTime, 0.0);
-		this->playerModel.rotate(0.0, 360 * deltaTime, 0.0);
+		this->disk.rotate(0.0, 90 * deltaTime, 0.0);
+		this->playerModel.rotate(0.0, 90 * deltaTime, 0.0);
 
         //rotate model
         /*if (timeToSwitch != 0) {
