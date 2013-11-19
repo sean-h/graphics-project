@@ -19,6 +19,11 @@ private:
     bool isPredator;
     float defaultRadius;
 	vec2 playBoundary;
+	float jumpHeight;
+	float jumpTimer;
+	float jumpDuration;
+	float jumpDamp;
+	float jumpFrequency;
 public:
 	Player(int playerNum);
     void update(Input input, float deltaTime, float timeToSwitch);

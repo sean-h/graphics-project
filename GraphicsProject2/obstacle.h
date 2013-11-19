@@ -11,7 +11,7 @@ private:
 	float hover;
 	vec2 playBoundary;
 public:
-	Obstacle(vec3 pos, float h, vec3 move);
+	Obstacle(vec3 pos, vec3 move);
 	void update(float deltaTime);
 	void draw(mat4 mv, mat4 p, Light light);
 	void onPlayerCollision();

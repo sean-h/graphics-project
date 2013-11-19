@@ -21,6 +21,12 @@ Player::Player(int playerNum)
 	this->collisionBounceTime = 0.5;
 	this->defaultRadius = 1.0f;
 	this->playBoundary = vec2(20.0, 20.0);
+
+	this->jumpHeight = 10.0;
+	this->jumpTimer = -1;
+	this->jumpDamp = 0.5f;
+	this->jumpFrequency = 5.0f;
+	this->jumpDuration = 2.0f;
 }
 
 void Player::update(Input input, float deltaTime, float timeToSwitch)
@@ -46,6 +52,10 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
                 //move left
                 moveDirection.z = 1.0f;
             }
+			if (input.isKeyDown('e') && this->jumpTimer < 0) {
+				this->jumpTimer = 0;
+			}
+
         }
         else if (playerNumber == 2)
         {
@@ -72,6 +82,16 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
         moveDirection *= moveSpeed * deltaTime;
 
         playerModel.move(moveDirection);
+
+		if (jumpTimer >= 0) {
+			jumpTimer += deltaTime;
+			float height = std::pow(2.71828f, -jumpDamp * jumpTimer) * jumpHeight * sin(jumpFrequency * jumpTimer);
+			playerModel.setPosition(vec3(playerModel.getPosition().x, height, playerModel.getPosition().z));
+		}
+		if (jumpTimer > jumpDuration) {
+			jumpTimer = -1;
+			playerModel.setPosition(vec3(playerModel.getPosition().x, 0, playerModel.getPosition().z));
+		}
 
         float distance = sqrt((moveDirection.x * moveDirection.x) + (moveDirection.y * moveDirection.y));
         this->distanceMoved += distance;
@@ -134,7 +154,9 @@ Sphere Player::getModel()
 void Player::onPlayerCollision(vec3 otherPlayerPos)
 {
 	bounceDirection = -normalize(otherPlayerPos - getPosition());
+	bounceDirection.y = 0;
 	bounceTimer = collisionBounceTime;
+	jumpTimer = -1;
 
 	if (!isPredator) {
 		float newRadius = std::max(playerModel.getRadius() * 0.8f, 0.5f);

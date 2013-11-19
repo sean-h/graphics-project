@@ -1,7 +1,7 @@
 #include "obstacle.h"
 #include "graphics.h"
 
-Obstacle::Obstacle(vec3 pos, float h, vec3 move)
+Obstacle::Obstacle(vec3 pos, vec3 move)
 {
 	isAlive = true;
 	this->model = Sphere(pos, 0.5, YELLOW);
@@ -16,6 +16,12 @@ void Obstacle::update(float deltaTime)
     }
     else if (model.getPosition().x + model.getRadius() > playBoundary.x) {
 		this->moveDirection.x *= -1;
+    }
+	if (model.getPosition().y - model.getRadius() < 0) {
+		this->moveDirection.y *= -1;
+    }
+    else if (model.getPosition().y + model.getRadius() > 10.0f) {
+		this->moveDirection.y *= -1;
     }
 	if (model.getPosition().z - model.getRadius() < -playBoundary.y) {
 		this->moveDirection.z *= -1;

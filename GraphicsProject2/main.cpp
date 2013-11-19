@@ -24,7 +24,7 @@ Player *player2;
 Cube *playField;
 Light *light;
 std::vector<Obstacle*> obstacles;
-const int obstacleCount = 10;
+const int obstacleCount = 100;
 
 bool isPaused = false;
 bool isGameOver = false;
@@ -50,18 +50,20 @@ void init()
 
 	for (int i = 0; i < obstacleCount; i++) {
 		float x = rand() % 40 - 20;
+		float y = rand() % 10;
 		float z = rand() % 40 - 20;
-		float moveX =  rand() % 20 - 10;
-		float moveZ =  rand() % 20 - 10;
+		float moveX = rand() % 20 - 10;
+		float moveY = rand() % 20 - 10;
+		float moveZ = rand() % 20 - 10;
 
-		Obstacle *o = new Obstacle(vec3(x, 0, z), 0, vec3(moveX, 0, moveZ));
+		Obstacle *o = new Obstacle(vec3(x, y, z), vec3(moveX, moveY, moveZ));
 		obstacles.push_back(o);
 	}
 
 	playField = new Cube(vec3(0.0, 0.0, 0.0), vec3(40.0, 0.1, 40.0));
 
     glEnable(GL_DEPTH_TEST);
-	glShadeModel(GL_FLAT);
+	glShadeModel(GL_SMOOTH);
     glClearColor( 0.5, 0.5, 0.5, 1.0 ); 
 
 	timer = clock();
@@ -75,7 +77,7 @@ void display()
 	mat4  p = camera->getPerspective();
 	player1->draw(mv, p, *light);
 	player2->draw(mv, p, *light);
-	//playField->draw(mv, p, *light);
+	playField->draw(mv, p, *light);
 
 	for (auto o : obstacles) {
 		o->draw(mv, p, *light);
@@ -96,6 +98,8 @@ void keyboard( unsigned char key, int x, int y )
     case VK_SPACE:
             isPaused = !isPaused;
             break;
+	case 'v':
+		light->isEnabled = !light->isEnabled;
     }
 }
 

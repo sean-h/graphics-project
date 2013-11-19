@@ -48,6 +48,8 @@ void Shape::draw(mat4 mv, mat4 p, Light light)
 	glUniform4fv(glGetUniformLocation(program, "SpecularProduct"), 1, light.specular * specular);
 	glUniform4fv(glGetUniformLocation(program, "LightPosition"), 1, light.position);
 	glUniform1f(glGetUniformLocation(program, "Shininess"), shininess);
+	glUniform1i(glGetUniformLocation(program, "LightingEnabled"), light.isEnabled);
+	glUniform4fv(glGetUniformLocation(program, "Diffuse"), 1, diffuse);
 	glUniformMatrix4fv(projectionMat, 1, GL_TRUE, p);
 	glUniformMatrix4fv(modelViewMat, 1, GL_TRUE, mv);
 
