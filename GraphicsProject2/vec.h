@@ -286,7 +286,11 @@ GLfloat length( const vec3& v ) {
 
 inline
 vec3 normalize( const vec3& v ) {
-    return v / length(v);
+	GLfloat l = length(v);
+	if (l != 0) {
+		return v / length(v);
+	}
+	return vec3(0.0f, 0.0f, 0.0f);
 }
 
 inline

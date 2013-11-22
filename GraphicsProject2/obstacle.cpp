@@ -4,7 +4,7 @@
 Obstacle::Obstacle(vec3 pos, vec3 move)
 {
 	isAlive = true;
-	this->model = Sphere(pos, 0.5, YELLOW);
+	this->model = Sphere(pos, 1.0, YELLOW);
 	this->playBoundary = vec2(20.0, 20.0);
 	this->moveDirection = move;
 }

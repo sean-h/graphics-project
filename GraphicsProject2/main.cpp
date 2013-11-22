@@ -21,11 +21,13 @@
 Camera *camera;
 Player *player1;
 Player *player2;
+Player *predator;
+Player *prey;
 Cube *playField;
 Light *light;
 std::vector<Obstacle*> obstacles;
-const int obstacleCount = 100;
-
+const int obstacleCount = 20;
+int switchCounter = 3;
 bool isPaused = false;
 bool isGameOver = false;
 Input input;
@@ -43,6 +45,9 @@ void init()
 	
 	player1 = new Player(1);
 	player2 = new Player(2);
+	predator = player1;
+	prey = player2;
+
 	light = new Light(point4(0.0, 1.0, 0.0, 1.0),
 					  color4(0.2, 0.2, 0.2, 1.0),
 					  color4(1.0, 1.0, 1.0, 1.0),
@@ -96,8 +101,8 @@ void keyboard( unsigned char key, int x, int y )
 		exit(EXIT_SUCCESS);
 		break;
     case VK_SPACE:
-            isPaused = !isPaused;
-            break;
+        isPaused = !isPaused;
+        break;
 	case 'v':
 		light->isEnabled = !light->isEnabled;
     }
@@ -115,6 +120,25 @@ void reshape(int width, int height)
 	camera->setAspect(GLfloat(width) / height);
 }
 
+void changePlayerRoles()
+{
+    if (switchCounter == 0) {
+        isGameOver = true;
+    } else {
+        Player *temp = predator;
+        predator = prey;
+        prey = temp;
+        
+        player1->onRoleSwitch();
+        player2->onRoleSwitch();
+
+        predator->makePredator();
+        prey->makePrey();
+
+        switchCounter--;
+    }
+}
+
 void idle() 
 {
         //handle timer
@@ -126,11 +150,9 @@ void idle()
         }
         timer = clock();
 
-        //update players
         if (!isPaused && !isGameOver) {
-			//light->position = player1->getModel().getPosition();
-			//light->position.y = 10;
-			player1->update(input, deltaSeconds, 0);
+			//update everything
+			player1->update(input, deltaSeconds, 0.1f);
 			player2->update(input, deltaSeconds, 0);
 			camera->update(input, deltaSeconds);
 			for (auto o : obstacles) {
@@ -139,11 +161,13 @@ void idle()
 				}
 			}
 
+			//check player collisions
 			if (collides(player1->getModel(), player2->getModel())) {
 				player1->onPlayerCollision(player2->getPosition());
 				player2->onPlayerCollision(player1->getPosition());
 			}
 
+			//check collision between obstacles and players
 			for (auto o : obstacles) {
 				if (o->getIsAlive()) {
 					if (collides(player1->getModel(), o->getModel())) {
@@ -158,6 +182,10 @@ void idle()
 					}
 				}
 			}
+
+			if (predator->isOverMovementBudget()) {
+				changePlayerRoles();
+            }
         }
 
         //update display

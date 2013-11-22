@@ -82,3 +82,8 @@ void Shape::rotate(float x, float y, float z)
 	rotation.y += y;
 	rotation.z += z;
 }
+
+void Shape::setColor(color4 color)
+{
+	diffuse = color;
+}

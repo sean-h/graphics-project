@@ -53,6 +53,7 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
                 moveDirection.z = 1.0f;
             }
 			if (input.isKeyDown('e') && this->jumpTimer < 0) {
+				//jump
 				this->jumpTimer = 0;
 			}
 
@@ -75,10 +76,14 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
                 //move left
                 moveDirection.z = 1.0f;
             }
+			if (input.isKeyDown('o') && this->jumpTimer < 0) {
+				//jump
+				this->jumpTimer = 0;
+			}
         }
 
         //normalize moveDirection so diagonal movement is not faster than axial movement
-        //moveDirection = normalize(moveDirection);
+        moveDirection = normalize(moveDirection);
         moveDirection *= moveSpeed * deltaTime;
 
         playerModel.move(moveDirection);
@@ -128,16 +133,18 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
         }
 
 		this->disk.setPosition(this->getPosition());
-		this->disk.rotate(0.0, 90 * deltaTime, 0.0);
-		this->playerModel.rotate(0.0, 90 * deltaTime, 0.0);
 
         //rotate model
-        /*if (timeToSwitch != 0) {
-                this->playerModel.rotate(2.0f * deltaTime / timeToSwitch);
+        if (timeToSwitch != 0) {
+                this->playerModel.rotate(0.0f, 90.0f * deltaTime / timeToSwitch, 0.0f);
+				this->disk.rotate(0.0, 90.0f * deltaTime / timeToSwitch, 0.0);
         }
         else {
-                this->playerModel.rotate(2.0f * deltaTime);
-        }*/
+                this->playerModel.rotate(0.0f, 90.0f * deltaTime, 0.0f);
+				this->disk.rotate(0.0, 90.0f * deltaTime, 0.0);
+        }
+
+
 }
 
 void Player::draw(mat4 mv, mat4 p, Light light)
@@ -185,11 +192,14 @@ void Player::onOtherPlayerObstacleCollision()
 void Player::makePredator()
 {
 	this->isPredator = true;
+	this->distanceMoved = 0.0f;
+	playerModel.setColor(RED);
 }
 
 void Player::makePrey()
 {
 	this->isPredator = false;
+	playerModel.setColor(BLUE);
 }
 
 void Player::onRoleSwitch()

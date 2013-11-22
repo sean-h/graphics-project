@@ -37,6 +37,7 @@ public:
 	vec3 getPosition();
 	void setPosition(vec3 pos);
 	void rotate(float x, float y, float z);
+	void setColor(color4 color);
 };
 
 class Cube : public Shape
