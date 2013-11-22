@@ -33,6 +33,31 @@ void Shape::setUpShader()
 	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(point4) * numVertices));		
 }
 
+void Shape::draw()
+{
+	setUpShader();
+	mat4 t = Translate(position);
+	glUniformMatrix4fv(positionMat, 1, GL_TRUE, t);
+
+	mat4 s = Scale(scale);
+	glUniformMatrix4fv(scaleMat, 1, GL_TRUE, s);
+
+	mat4 r = RotateX(rotation.x) * RotateY(rotation.y) * RotateZ(rotation.z);
+	glUniformMatrix4fv(rotationMat, 1, GL_TRUE, r);
+
+	glUniform4fv(glGetUniformLocation(program, "AmbientProduct"), 1, ambient);
+	glUniform4fv(glGetUniformLocation(program, "DiffuseProduct"), 1, diffuse);
+	glUniform4fv(glGetUniformLocation(program, "SpecularProduct"), 1, specular);
+	glUniform4fv(glGetUniformLocation(program, "LightPosition"), 1, vec3());
+	glUniform1f(glGetUniformLocation(program, "Shininess"), shininess);
+	glUniform1i(glGetUniformLocation(program, "LightingEnabled"), false);
+	glUniform4fv(glGetUniformLocation(program, "Diffuse"), 1, diffuse);
+	glUniformMatrix4fv(projectionMat, 1, GL_TRUE, mat4());
+	glUniformMatrix4fv(modelViewMat, 1, GL_TRUE, mat4());
+
+	glDrawArrays(GL_TRIANGLES, 0, numVertices);
+}
+
 void Shape::draw(mat4 mv, mat4 p, Light light)
 {
 	setUpShader();
@@ -89,4 +114,9 @@ void Shape::rotate(float x, float y, float z)
 void Shape::setColor(color4 color)
 {
 	diffuse = color;
+}
+
+void Shape::setScaleX(float x)
+{
+	scale.x = x;
 }

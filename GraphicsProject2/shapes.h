@@ -34,12 +34,14 @@ public:
 	Shape();
 	int getNumVertices();
 	void setUpShader();
+	void draw();
 	void draw(mat4 mv, mat4 p, Light light);
 	void move(vec3 amount);
 	vec3 getPosition();
 	void setPosition(vec3 pos);
 	void rotate(float x, float y, float z);
 	void setColor(color4 color);
+	void setScaleX(float x);
 };
 
 class Cube : public Shape

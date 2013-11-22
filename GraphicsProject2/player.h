@@ -5,6 +5,7 @@
 
 #include "input.h"
 #include "shapes.h"
+#include <vector>
 
 class Player
 {
@@ -27,6 +28,7 @@ private:
 	float jumpDuration;
 	float jumpDamp;
 	float jumpFrequency;
+	std::vector<Cube *> scoreIndicators;
 public:
 	Player(int playerNum);
     void update(Input input, float deltaTime, float timeToSwitch);

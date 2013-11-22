@@ -18,7 +18,7 @@ Player::Player(int playerNum)
 	}
 	this->score = 0;
 	this->moveSpeed = 20.0;
-	this->movementBudget = 100.0f;
+	this->movementBudget = 500.0f;
 	this->distanceMoved = 0.0f;
 	this->bounceTimer = 0.0f;
 	this->collisionBounceTime = 0.5;
@@ -30,6 +30,23 @@ Player::Player(int playerNum)
 	this->jumpDamp = 0.5f;
 	this->jumpFrequency = 5.0f;
 	this->jumpDuration = 2.0f;
+
+	float scoreX = -0.90f;
+	float scoreXOffset = 0.06f;
+	if (playerNum == 2) {
+		scoreX *= -1.0f;
+		scoreXOffset *= -1.0f;
+	}
+	float scoreY = 0.9f;
+	for (int y = 0; y < 10; y++) {
+		for (int x = 0; x < 5; x++) {
+			Cube *scoreIndicator = new Cube(vec3(scoreX + (scoreXOffset * x),
+												 scoreY - (0.06f * y),
+												 0.0f),
+											vec3(0.05f, 0.05f, 0.05f));
+			scoreIndicators.push_back(scoreIndicator);
+		}
+	}
 }
 
 void Player::update(Input input, float deltaTime, float timeToSwitch)
@@ -91,6 +108,7 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
 
         playerModel.move(moveDirection);
 
+		float prevHeight = getPosition().y;
 		if (jumpTimer >= 0) {
 			jumpTimer += deltaTime;
 			float height = std::pow(2.71828f, -jumpDamp * jumpTimer) * jumpHeight * sin(jumpFrequency * jumpTimer);
@@ -101,7 +119,8 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
 			playerModel.setPosition(vec3(playerModel.getPosition().x, 0, playerModel.getPosition().z));
 		}
 
-        float distance = sqrt((moveDirection.x * moveDirection.x) + (moveDirection.y * moveDirection.y));
+		float deltaY = abs(prevHeight - getPosition().y);
+		float distance = sqrt((moveDirection.x * moveDirection.x) + (moveDirection.z * moveDirection.z)) + deltaY;
         this->distanceMoved += distance;
     }
     else {
@@ -146,14 +165,20 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
                 this->playerModel.rotate(0.0f, 90.0f * deltaTime, 0.0f);
 				this->disk.rotate(0.0, 90.0f * deltaTime, 0.0);
         }
-
-
 }
 
 void Player::draw(mat4 mv, mat4 p, Light light)
 {
 	this->playerModel.draw(mv, p, light);
 	this->disk.draw(mv, p, light);
+	int count = 0;
+	for (auto scoreIndicator : scoreIndicators) {
+		count++;
+		if (count > score) {
+			break;
+		}
+		scoreIndicator->draw();
+	}
 }
 
 Sphere Player::getModel()
@@ -171,6 +196,8 @@ void Player::onPlayerCollision(vec3 otherPlayerPos)
 	if (!isPredator) {
 		float newRadius = std::max(playerModel.getRadius() * 0.8f, 0.5f);
 		playerModel.setRadius(newRadius);
+	} else {
+		score++;
 	}
 }
 

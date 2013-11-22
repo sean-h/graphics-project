@@ -20,13 +20,13 @@ uniform vec4 Diffuse;
 
 void main()
 {
-	gl_Position = Projection * ModelView * Position * Rotation * Scale  * vPosition;
+	gl_Position = Projection * ModelView * Position * Rotation * Scale * vPosition;
 
 	if (LightingEnabled) {
 		// Transform vertex  position into eye coordinates
 		vec3 pos = (Position * Rotation  * Scale * vPosition).xyz;
 	
-		vec3 L = normalize(LightPosition.xyz - pos );
+		vec3 L = normalize(LightPosition.xyz - pos);
 		vec3 E = normalize(-pos);
 		vec3 H = normalize(L + E);
 
@@ -50,6 +50,5 @@ void main()
 		color.a = 1.0;
 	} else {
 		color = Diffuse;
-
 	}
 }

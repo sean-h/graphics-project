@@ -20,6 +20,7 @@ Player *player2;
 Player *predator;
 Player *prey;
 Cube *playField;
+Cube *movementBar;
 Light *light;
 std::vector<Obstacle*> obstacles;
 const int obstacleCount = 20;
@@ -61,6 +62,7 @@ void init()
 	}
 
 	playField = new Cube(vec3(0.0, 0.0, 0.0), vec3(40.0, 0.1, 40.0));
+	movementBar = new Cube(vec3(0.0f, 0.80f, 0.0f), vec3(0.25f, 0.1f, 0.25f));
 
     glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
@@ -78,6 +80,8 @@ void display()
 	player1->draw(mv, p, *light);
 	player2->draw(mv, p, *light);
 	playField->draw(mv, p, *light);
+
+	movementBar->draw();
 
 	for (auto o : obstacles) {
 		o->draw(mv, p, *light);
@@ -150,6 +154,7 @@ void idle()
 			player1->update(input, deltaSeconds, 0.1f);
 			player2->update(input, deltaSeconds, 0);
 			camera->update(input, deltaSeconds);
+			movementBar->setScaleX(1.0f - (predator->getDistanceMoved() / predator->getMovementBudget()));
 			for (auto o : obstacles) {
 				if (o->getIsAlive()) {
 					o->update(deltaSeconds);
