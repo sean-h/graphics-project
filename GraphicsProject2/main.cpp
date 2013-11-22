@@ -151,10 +151,11 @@ void idle()
 
         if (!isPaused && !isGameOver) {
 			//update everything
-			player1->update(input, deltaSeconds, 0.1f);
-			player2->update(input, deltaSeconds, 0);
+			float timeToChange = 1.0f - (predator->getDistanceMoved() / predator->getMovementBudget());
+			player1->update(input, deltaSeconds, timeToChange);
+			player2->update(input, deltaSeconds, timeToChange);
 			camera->update(input, deltaSeconds);
-			movementBar->setScaleX(1.0f - (predator->getDistanceMoved() / predator->getMovementBudget()));
+			movementBar->setScaleX(timeToChange);
 			for (auto o : obstacles) {
 				if (o->getIsAlive()) {
 					o->update(deltaSeconds);

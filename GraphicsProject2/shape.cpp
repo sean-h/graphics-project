@@ -99,9 +99,21 @@ vec3 Shape::getPosition()
 	return this->position;
 }
 
+vec3 Shape::getScale()
+{
+	return this->scale;
+}
+
 void Shape::setPosition(vec3 pos)
 {
 	this->position = pos;
+}
+
+void Shape::setScale(float x, float y, float z)
+{
+	this->scale.x = x;
+	this->scale.y = y;
+	this->scale.z = z;
 }
 
 void Shape::rotate(float x, float y, float z)
@@ -118,5 +130,15 @@ void Shape::setColor(color4 color)
 
 void Shape::setScaleX(float x)
 {
-	scale.x = x;
+	setScale(x, scale.y, scale.z);
+}
+
+void Shape::setScaleY(float y)
+{
+	setScale(scale.x, y, scale.z);
+}
+
+void Shape::setScaleZ(float z)
+{
+	setScale(scale.x, scale.y, z);
 }

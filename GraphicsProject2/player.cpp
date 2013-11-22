@@ -8,8 +8,8 @@ Player::Player(int playerNum)
 {
 	this->playerNumber = playerNum;
 	this->playerModel = Sphere(vec3(0.0, 0.0, 10.0), 1, RED);
-	this->disk = Sphere(vec3(0.0, 0.0, 10.0), 1.0, BLUE);
-	this->disk.setScale(1.25, 1.25, 0.1);
+	this->disk = Sphere(vec3(0.0, 0.0, 10.0), 1.0, GREEN);
+	this->disk.setScale(0.1f, 1.25f, 1.25f);
 	if (playerNum == 1) {
 		makePredator();
 	} else {
@@ -196,6 +196,8 @@ void Player::onPlayerCollision(vec3 otherPlayerPos)
 	if (!isPredator) {
 		float newRadius = std::max(playerModel.getRadius() * 0.8f, 0.5f);
 		playerModel.setRadius(newRadius);
+		disk.setScaleY(disk.getScale().y * 0.8f);
+		disk.setScaleZ(disk.getScale().z * 0.8f);
 	} else {
 		score++;
 	}

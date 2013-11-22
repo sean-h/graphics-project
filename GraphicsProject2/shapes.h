@@ -38,10 +38,14 @@ public:
 	void draw(mat4 mv, mat4 p, Light light);
 	void move(vec3 amount);
 	vec3 getPosition();
+	vec3 getScale();
 	void setPosition(vec3 pos);
+	void setScale(float x, float y, float z);
 	void rotate(float x, float y, float z);
 	void setColor(color4 color);
 	void setScaleX(float x);
+	void setScaleY(float y);
+	void setScaleZ(float z);
 };
 
 class Cube : public Shape
@@ -69,5 +73,4 @@ public:
 	Sphere(vec3 pos, GLfloat r, color4 color);
 	float getRadius();
 	void setRadius(float r);
-	void setScale(float x, float y, float z);
 };
