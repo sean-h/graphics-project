@@ -1,3 +1,7 @@
+// ************
+// fshader.glsl
+// ************
+
 #version 150 
 
 in  vec4 color;

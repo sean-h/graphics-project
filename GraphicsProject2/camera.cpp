@@ -1,3 +1,6 @@
+/***********
+* camera.cpp
+***********/
 #include "camera.h"
 #include "graphics.h"
 

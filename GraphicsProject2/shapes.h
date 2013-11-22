@@ -1,5 +1,7 @@
-#ifndef __SHAPES_H__
-#define __SHAPES_H__
+/***********
+* shapes.h
+***********/
+#pragma once
 
 #include "Angel.h"
 #include "graphics.h"
@@ -67,5 +69,3 @@ public:
 	void setRadius(float r);
 	void setScale(float x, float y, float z);
 };
-
-#endif

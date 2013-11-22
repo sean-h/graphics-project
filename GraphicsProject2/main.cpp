@@ -1,10 +1,6 @@
-//
-// Perspective view of a color cube using LookAt() and Perspective()
-//
-// Colors are assigned to each vertex and then the rasterizer interpolates
-//   those colors across the triangles.
-//
-
+/***********
+* main.cpp
+***********/
 #include "Angel.h"
 #include "graphics.h"
 #include "player.h"
@@ -34,7 +30,6 @@ Input input;
 clock_t timer;
 clock_t gameTimer;
 
-// OpenGL initialization
 void init()
 {
 	GLuint vao;

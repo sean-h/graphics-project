@@ -1,7 +1,6 @@
 /***********
 * input.cpp
 ***********/
-
 #include <vector>
 #include "input.h"
 #include <iostream>

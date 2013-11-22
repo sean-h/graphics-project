@@ -104,9 +104,8 @@
     <ClInclude Include="vec.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fshader42.glsl" />
-    <None Include="vshader42.glsl" />
-    <None Include="vshader53.glsl" />
+    <None Include="fshader.glsl" />
+    <None Include="vshader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

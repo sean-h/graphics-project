@@ -1,9 +1,7 @@
 /***********
 * input.h
 ***********/
-
-#ifndef __INPUT_H__
-#define __INPUT_H__
+#pragma once
 
 #include <vector>
 
@@ -17,5 +15,3 @@ public:
         void keyPressed(unsigned char key);
         void keyReleased(unsigned char key);
 };
-
-#endif

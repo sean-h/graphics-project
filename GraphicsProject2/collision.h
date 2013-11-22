@@ -1,4 +1,8 @@
+/***********
+* collision.h
+***********/
 #pragma once
+
 #include "vec.h"
 #include "shapes.h"
 

@@ -1,5 +1,7 @@
-#ifndef __CAMERA_H__
-#define __CAMERA_H__
+/***********
+* camera.h
+***********/
+#pragma once
 
 #include "Angel.h"
 #include "input.h"
@@ -27,5 +29,3 @@ public:
 	void rotate(float angle);
 	void zoom(float amount);
 };
-
-#endif

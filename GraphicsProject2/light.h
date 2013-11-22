@@ -1,5 +1,7 @@
-#ifndef __LIGHT_H__
-#define __LIGHT_H__
+/***********
+* light.h
+***********/
+#pragma once
 
 #include "graphics.h"
 
@@ -15,5 +17,3 @@ public:
 	color4 specular;
 	bool isEnabled;
 };
-
-#endif

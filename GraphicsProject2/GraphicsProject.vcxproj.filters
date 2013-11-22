@@ -85,13 +85,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fshader42.glsl">
+    <None Include="vshader.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="vshader42.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="vshader53.glsl">
+    <None Include="fshader.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

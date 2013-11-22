@@ -1,8 +1,11 @@
+/***********
+* shape.cpp
+***********/
 #include "shapes.h"
 
 Shape::Shape()
 { 
-	program = InitShader("vshader53.glsl", "fshader42.glsl");
+	program = InitShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
 
 	modelViewMat = glGetUniformLocation(program, "ModelView");
