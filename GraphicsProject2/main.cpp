@@ -89,7 +89,7 @@ void init()
 	movementBar = new Cube(vec3(0.0f, 0.80f, 0.0f), vec3(0.25f, 0.1f, 0.25f));
 
     glEnable(GL_DEPTH_TEST);
-	glShadeModel(GL_SMOOTH);
+	glShadeModel(GL_FLAT);
     glClearColor( 0.5, 0.5, 0.5, 1.0 ); 
 
 	timer = clock();

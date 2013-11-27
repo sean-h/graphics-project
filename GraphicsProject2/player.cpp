@@ -113,6 +113,8 @@ void Player::update(Input input, float deltaTime, float timeToSwitch)
 			jumpTimer += deltaTime;
 			float height = std::pow(2.71828f, -jumpDamp * jumpTimer) * jumpHeight * sin(jumpFrequency * jumpTimer);
 			playerModel.setPosition(vec3(playerModel.getPosition().x, height, playerModel.getPosition().z));
+		} else {
+			playerModel.setPosition(vec3(playerModel.getPosition().x, 0, playerModel.getPosition().z));
 		}
 		if (jumpTimer > jumpDuration) {
 			jumpTimer = -1;
@@ -189,7 +191,6 @@ Sphere Player::getModel()
 void Player::onPlayerCollision(vec3 otherPlayerPos)
 {
 	bounceDirection = -normalize(otherPlayerPos - getPosition());
-	bounceDirection.y = 0;
 	bounceTimer = collisionBounceTime;
 	jumpTimer = -1;
 
@@ -237,6 +238,7 @@ void Player::makePrey()
 void Player::onRoleSwitch()
 {
 	this->isPredator = !isPredator;
+	playerModel.setRadius(1.0f);
 }
 
 float Player::getMovementBudget()

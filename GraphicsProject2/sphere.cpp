@@ -20,7 +20,7 @@ Sphere::Sphere(vec3 pos, GLfloat r, color4 color)
 	diffuse = color;
 	ambient = color4(0.0, 0.0, 0.0, 1.0);
 	specular = color4(0.5, 0.5, 0.5, 1.0);
-	shininess = 10.0;
+	shininess = 100.0;
 	
 	for (int i = 0; i < numVertices; i++) {
 		points[i] = point4(0.0, 0.0, 0.0, 1.0);
