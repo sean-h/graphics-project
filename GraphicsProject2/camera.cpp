@@ -13,28 +13,38 @@ Camera::Camera(vec3 pos)
 	this->zNear = 0.1;
 	this->zFar = 300;
 	this->theta = 3.14 / 2.0;
+	this->phi = 3.14 / 2.0;
 	this->orbitSpeed = 1.0;
 	this->zoomSpeed = 10.0;
 	this->radius = 40;
-	rotate(0);
+	rotate(0, 0);
 }
 
 void Camera::update(Input input, float deltaTime)
 {
-	if (input.isKeyDown('t'))
+	if (input.isKeyDown('f'))
 	{
-		rotate(-orbitSpeed * deltaTime);
+		rotate(-orbitSpeed * deltaTime, 0);
+	}
+	if (input.isKeyDown('h'))
+	{
+		rotate(orbitSpeed * deltaTime, 0);
+	}
+
+	if (input.isKeyDown('r'))
+	{
+		rotate(0, -orbitSpeed * deltaTime);
 	}
 	if (input.isKeyDown('y'))
 	{
-		rotate(orbitSpeed * deltaTime);
+		rotate(0, orbitSpeed * deltaTime);
 	}
 
-	if (input.isKeyDown('g'))
+	if (input.isKeyDown('t'))
 	{
 		zoom(-zoomSpeed * deltaTime);
 	}
-	if (input.isKeyDown('h'))
+	if (input.isKeyDown('g'))
 	{
 		zoom(zoomSpeed * deltaTime);
 	}
@@ -55,15 +65,16 @@ void Camera::setAspect(GLfloat aspect)
 	this->aspect = aspect;
 }
 
-void Camera::rotate(float angle)
+void Camera::rotate(float theta, float phi)
 {
-	this->theta += angle;
+	this->theta += theta;
+	this->phi += phi;
 
-	position = vec3(radius*sin(theta), radius, radius*cos(theta));
+	position = vec3(radius*sin(this->theta), radius*sin(this->phi), radius*cos(this->theta));
 }
 
 void Camera::zoom(float amount)
 {
 	this->radius += amount;
-	rotate(0);
+	rotate(0, 0);
 }

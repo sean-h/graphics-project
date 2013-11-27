@@ -18,6 +18,7 @@ private:
 	vec4 up;
 	vec4 at;
 	float theta;
+	float phi;
 	float orbitSpeed;
 	float zoomSpeed;
 public:
@@ -26,6 +27,6 @@ public:
 	mat4 getLookAt();
 	mat4 getPerspective();
 	void setAspect(GLfloat);
-	void rotate(float angle);
+	void rotate(float theta, float phi);
 	void zoom(float amount);
 };

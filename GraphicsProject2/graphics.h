@@ -12,3 +12,4 @@ typedef Angel::vec4  point4;
 #define GREEN color4(0.0, 1.0, 0.0, 1.0)
 #define BLUE color4(0.0, 0.0, 1.0, 1.0)
 #define YELLOW color4(1.0, 1.0, 0.0, 1.0)
+#define WHITE color4(1.0, 1.0, 1.0, 1.0)

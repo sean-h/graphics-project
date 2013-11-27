@@ -31,6 +31,30 @@ Input input;
 clock_t timer;
 clock_t gameTimer;
 
+enum KEYBOARD_CONTROL
+{
+	LIGHT = 0,
+	CAMERA = 1,
+};
+int keyboardControl = LIGHT;
+
+enum MENU_ITEMS
+{
+	LIGHTING_ENABLED,
+	DIFFUSE_RED,
+	DIFFUSE_BLUE,
+	DIFFUSE_GREEN,
+	DIFFUSE_WHITE,
+	SPEC_RED,
+	SPEC_BLUE,
+	SPEC_GREEN,
+	SPEC_WHITE,
+	AMB_RED,
+	AMB_BLUE,
+	AMB_GREEN,
+	AMB_WHITE,
+};
+
 void init()
 {
 	GLuint vao;
@@ -103,7 +127,8 @@ void keyboard( unsigned char key, int x, int y )
         isPaused = !isPaused;
         break;
 	case 'v':
-		light->isEnabled = !light->isEnabled;
+		keyboardControl = (keyboardControl + 1) % 2;
+		break;
     }
 }
 
@@ -154,7 +179,11 @@ void idle()
 			float timeToChange = 1.0f - (predator->getDistanceMoved() / predator->getMovementBudget());
 			player1->update(input, deltaSeconds, timeToChange);
 			player2->update(input, deltaSeconds, timeToChange);
-			camera->update(input, deltaSeconds);
+			if (keyboardControl == CAMERA) {
+				camera->update(input, deltaSeconds);
+			} else if (keyboardControl == LIGHT) {
+				light->update(input, deltaSeconds);
+			}
 			movementBar->setScaleX(timeToChange);
 			for (auto o : obstacles) {
 				if (o->getIsAlive()) {
@@ -193,6 +222,59 @@ void idle()
         glutPostRedisplay();
 }
 
+void menu(int item)
+{
+	switch (item)
+	{
+	case LIGHTING_ENABLED:
+		light->isEnabled = ! light->isEnabled;
+		break;
+
+	case DIFFUSE_RED:
+		light->diffuse = RED;
+		break;
+	case DIFFUSE_BLUE:
+		light->diffuse = BLUE;
+		break;
+	case DIFFUSE_GREEN:
+		light->diffuse = GREEN;
+		break;
+	case DIFFUSE_WHITE:
+		light->diffuse = WHITE;
+		break;
+
+	case SPEC_RED:
+		light->specular = RED;
+		break;
+	case SPEC_BLUE:
+		light->specular = BLUE;
+		break;
+	case SPEC_GREEN:
+		light->specular = GREEN;
+		break;
+	case SPEC_WHITE:
+		light->specular = WHITE;
+		break;
+
+	case AMB_RED:
+		light->ambient = RED / 5.0;
+		light->ambient.w = 1.0;
+		break;
+	case AMB_BLUE:
+		light->ambient = BLUE / 5.0;
+		light->ambient.w = 1.0;
+		break;
+	case AMB_GREEN:
+		light->ambient = GREEN / 5.0;
+		light->ambient.w = 1.0;
+		break;
+	case AMB_WHITE:
+		light->ambient = WHITE / 5.0;
+		light->ambient.w = 1.0;
+		break;
+	}
+}
+
 int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
@@ -212,6 +294,37 @@ int main(int argc, char **argv)
 	glutKeyboardUpFunc(keyUp);
     glutReshapeFunc(reshape);
 	glutIdleFunc(idle);
+
+	int lightMenu, diffuse, specular, ambient, mainMenu;
+	
+
+	diffuse = glutCreateMenu(menu);
+	glutAddMenuEntry("Red", DIFFUSE_RED);
+	glutAddMenuEntry("Blue", DIFFUSE_BLUE);
+	glutAddMenuEntry("Green", DIFFUSE_GREEN);
+	glutAddMenuEntry("White", DIFFUSE_WHITE);
+	
+	specular = glutCreateMenu(menu);
+	glutAddMenuEntry("Red", SPEC_RED);
+	glutAddMenuEntry("Blue", SPEC_BLUE);
+	glutAddMenuEntry("Green", SPEC_GREEN);
+	glutAddMenuEntry("White", SPEC_WHITE);
+
+	ambient = glutCreateMenu(menu);
+	glutAddMenuEntry("Red", AMB_RED);
+	glutAddMenuEntry("Blue", AMB_BLUE);
+	glutAddMenuEntry("Green", AMB_GREEN);
+	glutAddMenuEntry("White", AMB_WHITE);
+
+	lightMenu = glutCreateMenu(menu);
+	glutAddMenuEntry("Toggle Lighting", LIGHTING_ENABLED);
+	glutAddSubMenu("Diffuse", diffuse);
+	glutAddSubMenu("Specular", specular);
+	glutAddSubMenu("Ambient", ambient);
+
+	mainMenu = glutCreateMenu(menu);
+	glutAddSubMenu("Lighting", lightMenu);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     glutMainLoop();
     return 0;
