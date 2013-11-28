@@ -3,7 +3,8 @@
 //  --- Angel.h ---
 //
 //   The main header file for all examples from Angel 6th Edition
-//
+//  From Interactive Computer Graphics 6th Edition
+//  by Edward Angel & Dave Shreiner
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef __ANGEL_H__
@@ -52,7 +53,7 @@ namespace Angel {
 
 //  Helper function to load vertex and fragment shader files
 GLuint InitShader( const char* vertexShaderFile,
-		   const char* fragmentShaderFile );
+           const char* fragmentShaderFile );
 
 //  Defined constant for when numbers are too small to be used in the
 //    denominator of a division operation.  This is only used if the

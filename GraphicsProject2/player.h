@@ -10,27 +10,27 @@
 class Player
 {
 private:
-	int playerNumber;
+    int playerNumber;
     int score;
     float movementBudget;
     float distanceMoved;
     float moveSpeed;
     Sphere playerModel;
-	Sphere disk;
+    Sphere disk;
     float bounceTimer;
     float collisionBounceTime;
     vec3 bounceDirection;
     bool isPredator;
     float defaultRadius;
-	vec2 playBoundary;
-	float jumpHeight;
-	float jumpTimer;
-	float jumpDuration;
-	float jumpDamp;
-	float jumpFrequency;
-	std::vector<Cube *> scoreIndicators;
+    vec2 playBoundary;
+    float jumpHeight;
+    float jumpTimer;
+    float jumpDuration;
+    float jumpDamp;
+    float jumpFrequency;
+    std::vector<Cube *> scoreIndicators;
 public:
-	Player(int playerNum);
+    Player(int playerNum);
     void update(Input input, float deltaTime, float timeToSwitch);
     void draw(mat4 mv, mat4 p, Light light);
     Sphere getModel();
@@ -45,6 +45,6 @@ public:
     bool isFrozen();
     bool isOverMovementBudget();
     int getScore();
-	vec3 getPosition();
-	float getRadius();
+    vec3 getPosition();
+    float getRadius();
 };

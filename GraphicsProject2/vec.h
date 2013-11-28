@@ -1,7 +1,8 @@
 //////////////////////////////////////////////////////////////////////////////
 //
 //  --- vec.h ---
-//
+//  From Interactive Computer Graphics 6th Edition
+//  by Edward Angel & Dave Shreiner
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef __ANGEL_VEC_H__
@@ -26,13 +27,13 @@ struct vec2 {
     //
 
     vec2( GLfloat s = GLfloat(0.0) ) :
-	x(s), y(s) {}
+    x(s), y(s) {}
 
     vec2( GLfloat x, GLfloat y ) :
-	x(x), y(y) {}
+    x(x), y(y) {}
 
     vec2( const vec2& v )
-	{ x = v.x;  y = v.y;  }
+    { x = v.x;  y = v.y;  }
 
     //
     //  --- Indexing Operator ---
@@ -46,34 +47,34 @@ struct vec2 {
     //
 
     vec2 operator - () const // unary minus operator
-	{ return vec2( -x, -y ); }
+    { return vec2( -x, -y ); }
 
     vec2 operator + ( const vec2& v ) const
-	{ return vec2( x + v.x, y + v.y ); }
+    { return vec2( x + v.x, y + v.y ); }
 
     vec2 operator - ( const vec2& v ) const
-	{ return vec2( x - v.x, y - v.y ); }
+    { return vec2( x - v.x, y - v.y ); }
 
     vec2 operator * ( const GLfloat s ) const
-	{ return vec2( s*x, s*y ); }
+    { return vec2( s*x, s*y ); }
 
     vec2 operator * ( const vec2& v ) const
-	{ return vec2( x*v.x, y*v.y ); }
+    { return vec2( x*v.x, y*v.y ); }
 
     friend vec2 operator * ( const GLfloat s, const vec2& v )
-	{ return v * s; }
+    { return v * s; }
 
     vec2 operator / ( const GLfloat s ) const {
 #ifdef DEBUG
-	if ( std::fabs(s) < DivideByZeroTolerance ) {
-	    std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
-		      << "Division by zero" << std::endl;
-	    return vec2();
-	}
+    if ( std::fabs(s) < DivideByZeroTolerance ) {
+        std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
+              << "Division by zero" << std::endl;
+        return vec2();
+    }
 #endif // DEBUG
 
-	GLfloat r = GLfloat(1.0) / s;
-	return *this * r;
+    GLfloat r = GLfloat(1.0) / s;
+    return *this * r;
     }
 
     //
@@ -81,51 +82,51 @@ struct vec2 {
     //
 
     vec2& operator += ( const vec2& v )
-	{ x += v.x;  y += v.y;   return *this; }
+    { x += v.x;  y += v.y;   return *this; }
 
     vec2& operator -= ( const vec2& v )
-	{ x -= v.x;  y -= v.y;  return *this; }
+    { x -= v.x;  y -= v.y;  return *this; }
 
     vec2& operator *= ( const GLfloat s )
-	{ x *= s;  y *= s;   return *this; }
+    { x *= s;  y *= s;   return *this; }
 
     vec2& operator *= ( const vec2& v )
-	{ x *= v.x;  y *= v.y; return *this; }
+    { x *= v.x;  y *= v.y; return *this; }
 
     vec2& operator /= ( const GLfloat s ) {
 #ifdef DEBUG
-	if ( std::fabs(s) < DivideByZeroTolerance ) {
-	    std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
-		      << "Division by zero" << std::endl;
-	}
+    if ( std::fabs(s) < DivideByZeroTolerance ) {
+        std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
+              << "Division by zero" << std::endl;
+    }
 #endif // DEBUG
 
-	GLfloat r = GLfloat(1.0) / s;
-	*this *= r;
+    GLfloat r = GLfloat(1.0) / s;
+    *this *= r;
 
-	return *this;
+    return *this;
     }
-	
+    
     //
     //  --- Insertion and Extraction Operators ---
     //
 
     friend std::ostream& operator << ( std::ostream& os, const vec2& v ) {
-	return os << "( " << v.x << ", " << v.y <<  " )";
+    return os << "( " << v.x << ", " << v.y <<  " )";
     }
 
     friend std::istream& operator >> ( std::istream& is, vec2& v )
-	{ return is >> v.x >> v.y ; }
+    { return is >> v.x >> v.y ; }
 
     //
     //  --- Conversion Operators ---
     //
 
     operator const GLfloat* () const
-	{ return static_cast<const GLfloat*>( &x ); }
+    { return static_cast<const GLfloat*>( &x ); }
 
     operator GLfloat* ()
-	{ return static_cast<GLfloat*>( &x ); }
+    { return static_cast<GLfloat*>( &x ); }
 };
 
 //----------------------------------------------------------------------------
@@ -142,11 +143,11 @@ inline GLfloat length( const vec2& v ) {
 }
 
 inline vec2 normalize( const vec2& v ) {
-	GLfloat l = length(v);
-	if (l != 0) {
-		return v / length(v);
-	}
-	return vec2(0.0f, 0.0f);
+    GLfloat l = length(v);
+    if (l != 0) {
+        return v / length(v);
+    }
+    return vec2(0.0f, 0.0f);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -166,10 +167,10 @@ struct vec3 {
     //
 
     vec3( GLfloat s = GLfloat(0.0) ) :
-	x(s), y(s), z(s) {}
+    x(s), y(s), z(s) {}
 
     vec3( GLfloat x, GLfloat y, GLfloat z ) :
-	x(x), y(y), z(z) {}
+    x(x), y(y), z(z) {}
 
     vec3( const vec3& v ) { x = v.x;  y = v.y;  z = v.z; }
 
@@ -187,34 +188,34 @@ struct vec3 {
     //
 
     vec3 operator - () const  // unary minus operator
-	{ return vec3( -x, -y, -z ); }
+    { return vec3( -x, -y, -z ); }
 
     vec3 operator + ( const vec3& v ) const
-	{ return vec3( x + v.x, y + v.y, z + v.z ); }
+    { return vec3( x + v.x, y + v.y, z + v.z ); }
 
     vec3 operator - ( const vec3& v ) const
-	{ return vec3( x - v.x, y - v.y, z - v.z ); }
+    { return vec3( x - v.x, y - v.y, z - v.z ); }
 
     vec3 operator * ( const GLfloat s ) const
-	{ return vec3( s*x, s*y, s*z ); }
+    { return vec3( s*x, s*y, s*z ); }
 
     vec3 operator * ( const vec3& v ) const
-	{ return vec3( x*v.x, y*v.y, z*v.z ); }
+    { return vec3( x*v.x, y*v.y, z*v.z ); }
 
     friend vec3 operator * ( const GLfloat s, const vec3& v )
-	{ return v * s; }
+    { return v * s; }
 
     vec3 operator / ( const GLfloat s ) const {
 #ifdef DEBUG
-	if ( std::fabs(s) < DivideByZeroTolerance ) {
-	    std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
-		      << "Division by zero" << std::endl;
-	    return vec3();
-	}
+    if ( std::fabs(s) < DivideByZeroTolerance ) {
+        std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
+              << "Division by zero" << std::endl;
+        return vec3();
+    }
 #endif // DEBUG
 
-	GLfloat r = GLfloat(1.0) / s;
-	return *this * r;
+    GLfloat r = GLfloat(1.0) / s;
+    return *this * r;
     }
 
     //
@@ -222,51 +223,51 @@ struct vec3 {
     //
 
     vec3& operator += ( const vec3& v )
-	{ x += v.x;  y += v.y;  z += v.z;  return *this; }
+    { x += v.x;  y += v.y;  z += v.z;  return *this; }
 
     vec3& operator -= ( const vec3& v )
-	{ x -= v.x;  y -= v.y;  z -= v.z;  return *this; }
+    { x -= v.x;  y -= v.y;  z -= v.z;  return *this; }
 
     vec3& operator *= ( const GLfloat s )
-	{ x *= s;  y *= s;  z *= s;  return *this; }
+    { x *= s;  y *= s;  z *= s;  return *this; }
 
     vec3& operator *= ( const vec3& v )
-	{ x *= v.x;  y *= v.y;  z *= v.z;  return *this; }
+    { x *= v.x;  y *= v.y;  z *= v.z;  return *this; }
 
     vec3& operator /= ( const GLfloat s ) {
 #ifdef DEBUG
-	if ( std::fabs(s) < DivideByZeroTolerance ) {
-	    std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
-		      << "Division by zero" << std::endl;
-	}
+    if ( std::fabs(s) < DivideByZeroTolerance ) {
+        std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
+              << "Division by zero" << std::endl;
+    }
 #endif // DEBUG
 
-	GLfloat r = GLfloat(1.0) / s;
-	*this *= r;
+    GLfloat r = GLfloat(1.0) / s;
+    *this *= r;
 
-	return *this;
+    return *this;
     }
-	
+    
     //
     //  --- Insertion and Extraction Operators ---
     //
 
     friend std::ostream& operator << ( std::ostream& os, const vec3& v ) {
-	return os << "( " << v.x << ", " << v.y << ", " << v.z <<  " )";
+    return os << "( " << v.x << ", " << v.y << ", " << v.z <<  " )";
     }
 
     friend std::istream& operator >> ( std::istream& is, vec3& v )
-	{ return is >> v.x >> v.y >> v.z ; }
+    { return is >> v.x >> v.y >> v.z ; }
 
     //
     //  --- Conversion Operators ---
     //
 
     operator const GLfloat* () const
-	{ return static_cast<const GLfloat*>( &x ); }
+    { return static_cast<const GLfloat*>( &x ); }
 
     operator GLfloat* ()
-	{ return static_cast<GLfloat*>( &x ); }
+    { return static_cast<GLfloat*>( &x ); }
 };
 
 //----------------------------------------------------------------------------
@@ -286,19 +287,19 @@ GLfloat length( const vec3& v ) {
 
 inline
 vec3 normalize( const vec3& v ) {
-	GLfloat l = length(v);
-	if (l != 0) {
-		return v / length(v);
-	}
-	return vec3(0.0f, 0.0f, 0.0f);
+    GLfloat l = length(v);
+    if (l != 0) {
+        return v / length(v);
+    }
+    return vec3(0.0f, 0.0f, 0.0f);
 }
 
 inline
 vec3 cross(const vec3& a, const vec3& b )
 {
     return vec3( a.y * b.z - a.z * b.y,
-		 a.z * b.x - a.x * b.z,
-		 a.x * b.y - a.y * b.x );
+         a.z * b.x - a.x * b.z,
+         a.x * b.y - a.y * b.x );
 }
 
 
@@ -320,18 +321,18 @@ struct vec4 {
     //
 
     vec4( GLfloat s = GLfloat(0.0) ) :
-	x(s), y(s), z(s), w(s) {}
+    x(s), y(s), z(s), w(s) {}
 
     vec4( GLfloat x, GLfloat y, GLfloat z, GLfloat w ) :
-	x(x), y(y), z(z), w(w) {}
+    x(x), y(y), z(z), w(w) {}
 
     vec4( const vec4& v ) { x = v.x;  y = v.y;  z = v.z;  w = v.w; }
 
     vec4( const vec3& v, const float w = 1.0 ) : w(w)
-	{ x = v.x;  y = v.y;  z = v.z; }
+    { x = v.x;  y = v.y;  z = v.z; }
 
     vec4( const vec2& v, const float z, const float w ) : z(z), w(w)
-	{ x = v.x;  y = v.y; }
+    { x = v.x;  y = v.y; }
 
     //
     //  --- Indexing Operator ---
@@ -345,34 +346,34 @@ struct vec4 {
     //
 
     vec4 operator - () const  // unary minus operator
-	{ return vec4( -x, -y, -z, -w ); }
+    { return vec4( -x, -y, -z, -w ); }
 
     vec4 operator + ( const vec4& v ) const
-	{ return vec4( x + v.x, y + v.y, z + v.z, w + v.w ); }
+    { return vec4( x + v.x, y + v.y, z + v.z, w + v.w ); }
 
     vec4 operator - ( const vec4& v ) const
-	{ return vec4( x - v.x, y - v.y, z - v.z, w - v.w ); }
+    { return vec4( x - v.x, y - v.y, z - v.z, w - v.w ); }
 
     vec4 operator * ( const GLfloat s ) const
-	{ return vec4( s*x, s*y, s*z, s*w ); }
+    { return vec4( s*x, s*y, s*z, s*w ); }
 
     vec4 operator * ( const vec4& v ) const
-	{ return vec4( x*v.x, y*v.y, z*v.z, w*v.z ); }
+    { return vec4( x*v.x, y*v.y, z*v.z, w*v.z ); }
 
     friend vec4 operator * ( const GLfloat s, const vec4& v )
-	{ return v * s; }
+    { return v * s; }
 
     vec4 operator / ( const GLfloat s ) const {
 #ifdef DEBUG
-	if ( std::fabs(s) < DivideByZeroTolerance ) {
-	    std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
-		      << "Division by zero" << std::endl;
-	    return vec4();
-	}
+    if ( std::fabs(s) < DivideByZeroTolerance ) {
+        std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
+              << "Division by zero" << std::endl;
+        return vec4();
+    }
 #endif // DEBUG
 
-	GLfloat r = GLfloat(1.0) / s;
-	return *this * r;
+    GLfloat r = GLfloat(1.0) / s;
+    return *this * r;
     }
 
     //
@@ -380,52 +381,52 @@ struct vec4 {
     //
 
     vec4& operator += ( const vec4& v )
-	{ x += v.x;  y += v.y;  z += v.z;  w += v.w;  return *this; }
+    { x += v.x;  y += v.y;  z += v.z;  w += v.w;  return *this; }
 
     vec4& operator -= ( const vec4& v )
-	{ x -= v.x;  y -= v.y;  z -= v.z;  w -= v.w;  return *this; }
+    { x -= v.x;  y -= v.y;  z -= v.z;  w -= v.w;  return *this; }
 
     vec4& operator *= ( const GLfloat s )
-	{ x *= s;  y *= s;  z *= s;  w *= s;  return *this; }
+    { x *= s;  y *= s;  z *= s;  w *= s;  return *this; }
 
     vec4& operator *= ( const vec4& v )
-	{ x *= v.x, y *= v.y, z *= v.z, w *= v.w;  return *this; }
+    { x *= v.x, y *= v.y, z *= v.z, w *= v.w;  return *this; }
 
     vec4& operator /= ( const GLfloat s ) {
 #ifdef DEBUG
-	if ( std::fabs(s) < DivideByZeroTolerance ) {
-	    std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
-		      << "Division by zero" << std::endl;
-	}
+    if ( std::fabs(s) < DivideByZeroTolerance ) {
+        std::cerr << "[" << __FILE__ << ":" << __LINE__ << "] "
+              << "Division by zero" << std::endl;
+    }
 #endif // DEBUG
 
-	GLfloat r = GLfloat(1.0) / s;
-	*this *= r;
+    GLfloat r = GLfloat(1.0) / s;
+    *this *= r;
 
-	return *this;
+    return *this;
     }
-	
+    
     //
     //  --- Insertion and Extraction Operators ---
     //
 
     friend std::ostream& operator << ( std::ostream& os, const vec4& v ) {
-	return os << "( " << v.x << ", " << v.y
-		  << ", " << v.z << ", " << v.w << " )";
+    return os << "( " << v.x << ", " << v.y
+          << ", " << v.z << ", " << v.w << " )";
     }
 
     friend std::istream& operator >> ( std::istream& is, vec4& v )
-	{ return is >> v.x >> v.y >> v.z >> v.w; }
+    { return is >> v.x >> v.y >> v.z >> v.w; }
 
     //
     //  --- Conversion Operators ---
     //
 
     operator const GLfloat* () const
-	{ return static_cast<const GLfloat*>( &x ); }
+    { return static_cast<const GLfloat*>( &x ); }
 
     operator GLfloat* ()
-	{ return static_cast<GLfloat*>( &x ); }
+    { return static_cast<GLfloat*>( &x ); }
 };
 
 //----------------------------------------------------------------------------
@@ -448,8 +449,8 @@ inline vec4 normalize( const vec4& v ) {
 inline vec3 cross(const vec4& a, const vec4& b )
 {
     return vec3( a.y * b.z - a.z * b.y,
-		 a.z * b.x - a.x * b.z,
-		 a.x * b.y - a.y * b.x );
+         a.z * b.x - a.x * b.z,
+         a.x * b.y - a.y * b.x );
 }
 
 //----------------------------------------------------------------------------
