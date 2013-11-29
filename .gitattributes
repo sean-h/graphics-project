@@ -1,0 +1,7 @@
+* text=auto
+
+*.cpp text
+*.h text
+
+# Checkout shader files with Unix line endings
+*.glsl text eol=lf
