@@ -73,4 +73,5 @@ public:
     Sphere(vec3 pos, GLfloat r, color4 color);
     float getRadius();
     void setRadius(float r);
+    bool collision(Sphere *otherSphere);
 };

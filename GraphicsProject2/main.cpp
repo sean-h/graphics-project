@@ -1,18 +1,17 @@
 /***********
 * main.cpp
 ***********/
+#include <random>
+#include <time.h>
+#include <vector>
 #include "Angel.h"
+#include "camera.h"
 #include "graphics.h"
+#include "input.h"
+#include "obstacle.h"
 #include "player.h"
 #include "shapes.h"
-#include "input.h"
-#include <time.h>
-#include "camera.h"
 #include "vec.h"
-#include <vector>
-#include "obstacle.h"
-#include "collision.h"
-#include <random>
 
 Camera *camera;
 Player *player1;
@@ -192,7 +191,7 @@ void idle()
             }
 
             //check player collisions
-            if (collides(player1->getModel(), player2->getModel())) {
+            if (player1->getModel()->collision(player2->getModel())) {
                 player1->onPlayerCollision(player2->getPosition());
                 player2->onPlayerCollision(player1->getPosition());
             }
@@ -200,12 +199,12 @@ void idle()
             //check collision between obstacles and players
             for (auto o : obstacles) {
                 if (o->getIsAlive()) {
-                    if (collides(player1->getModel(), o->getModel())) {
+                    if(player1->getModel()->collision(o->getModel())) {
                         player1->onObstacleCollision();
                         player2->onOtherPlayerObstacleCollision();
                         o->onPlayerCollision();
                     }
-                    if (collides(player2->getModel(), o->getModel())) {
+                    if(player2->getModel()->collision(o->getModel())) {
                         player2->onObstacleCollision();
                         player1->onOtherPlayerObstacleCollision();
                         o->onPlayerCollision();
@@ -297,7 +296,6 @@ int main(int argc, char **argv)
 
     int lightMenu, diffuse, specular, ambient, mainMenu;
     
-
     diffuse = glutCreateMenu(menu);
     glutAddMenuEntry("Red", DIFFUSE_RED);
     glutAddMenuEntry("Blue", DIFFUSE_BLUE);

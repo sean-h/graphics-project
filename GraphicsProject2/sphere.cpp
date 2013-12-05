@@ -99,3 +99,10 @@ void Sphere::setRadius(float r)
     this->radius = r;
     setScale(r, r, r);
 }
+
+bool Sphere::collision(Sphere *otherSphere)
+{
+    float distance = length(this->getPosition() - otherSphere->getPosition());
+    float r = this->getRadius() + otherSphere->getRadius();
+    return (distance <= r);
+}

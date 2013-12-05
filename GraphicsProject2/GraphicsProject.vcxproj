@@ -94,7 +94,6 @@
     <ClInclude Include="Angel.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="CheckError.h" />
-    <ClInclude Include="collision.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />

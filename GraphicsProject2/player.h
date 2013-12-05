@@ -15,8 +15,8 @@ private:
     float movementBudget;
     float distanceMoved;
     float moveSpeed;
-    Sphere playerModel;
-    Sphere disk;
+    Sphere *playerModel;
+    Sphere *disk;
     float bounceTimer;
     float collisionBounceTime;
     vec3 bounceDirection;
@@ -31,9 +31,10 @@ private:
     std::vector<Cube *> scoreIndicators;
 public:
     Player(int playerNum);
+    ~Player();
     void update(Input input, float deltaTime, float timeToSwitch);
     void draw(mat4 mv, mat4 p, Light light);
-    Sphere getModel();
+    Sphere* getModel();
     void onPlayerCollision(vec3 otherPlayerPos);
     void onObstacleCollision();
     void onOtherPlayerObstacleCollision();
