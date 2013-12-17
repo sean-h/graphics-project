@@ -12,5 +12,10 @@
 *.la
 *.a
 
-#Folders
+# Visual Studio Files
+*.sdf
+*.suo
+*.opensdf
+
+# Folders
 Debug/
